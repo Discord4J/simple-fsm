@@ -5,10 +5,10 @@ import com.darichey.simplefsm.FiniteStateMachine;
 import static com.darichey.simplefsm.water.WaterStates.*;
 import static com.darichey.simplefsm.water.Event.*;
 
-public class WaterStateMachine extends FiniteStateMachine<WaterStates, Event> {
+class WaterStateMachine extends FiniteStateMachine<WaterStates, Event> {
 
     {
-        initial(SOLID);
+        startWith(LIQUID);
 
         when(SOLID)
                 .on(Melted.class, melted -> {

@@ -1,27 +1,16 @@
 package com.darichey.simplefsm;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
-public class FiniteStateMachine<S, E> {
+public abstract class FiniteStateMachine<S, E> {
 
-    private final Map<HandlerKey<S>, Function<? super E, ? extends S>> transitionHandlers = new HashMap<>();
+    private final Map<HandlerKey<S>, List<EventHandler<S, E>>> transitionHandlers = new HashMap<>();
     private Function<? super E, ? extends S> fallbackHandler;
     private S currentState;
 
-    public void on(E event) {
-        Function<? super E, ? extends S> handler = transitionHandlers.get(new HandlerKey<>(currentState, event.getClass()));
-        if (handler != null) {
-            currentState = handler.apply(event);
-        } else if (fallbackHandler != null) {
-            currentState = fallbackHandler.apply(event);
-        } else {
-            throw new UnhandledTransitionException(currentState, event);
-        }
-    }
-
-    public void initial(S initialState) {
+    public void startWith(S initialState) {
         this.currentState = initialState;
     }
 
@@ -33,11 +22,33 @@ public class FiniteStateMachine<S, E> {
         this.fallbackHandler = fallbackHandler;
     }
 
+    public void onEvent(E event) {
+        if (currentState == null) {
+            throw new IllegalStateException("Attempt to trigger event before setting initial state");
+        }
+
+        List<EventHandler<S, E>> handlers = transitionHandlers.getOrDefault(new HandlerKey<>(currentState, event.getClass()), Collections.emptyList());
+        for (EventHandler<S, E> handler : handlers) {
+            if (handler.canHandle(event)) {
+                currentState = handler.handle(event);
+                return;
+            }
+        }
+
+        if (fallbackHandler != null) {
+            currentState = fallbackHandler.apply(event);
+        } else {
+            throw new UnhandledTransitionException(currentState, event);
+        }
+    }
+
     public S getCurrentState() {
         return currentState;
     }
 
-    void addHandler(S from, Class<? extends E> eventType, Function<? super E, ? extends S> transitionHandler) {
-        transitionHandlers.put(new HandlerKey<>(from, eventType), transitionHandler);
+    <C extends E> void addHandler(S from, Class<C> eventType, Predicate<? super C> canHandle, Function<? super C, ? extends S> handler) {
+        transitionHandlers
+                .computeIfAbsent(new HandlerKey<>(from, eventType), key -> new ArrayList<>())
+                .add((EventHandler<S, E>) new EventHandler<S, C>(handler, canHandle));
     }
 }

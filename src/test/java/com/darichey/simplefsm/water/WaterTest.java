@@ -11,18 +11,18 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class WaterTest {
 
     @Test
-    public void testInitialSet() {
+    public void testInitial() {
         WaterStateMachine fsm = new WaterStateMachine();
 
-        assertEquals(SOLID, fsm.getCurrentState());
+        assertEquals(LIQUID, fsm.getCurrentState());
     }
 
     @Test
     public void testTransition() {
         WaterStateMachine fsm = new WaterStateMachine();
-        fsm.on(new Melted());
+        fsm.onEvent(new Frozen());
 
-        assertEquals(LIQUID, fsm.getCurrentState());
+        assertEquals(SOLID, fsm.getCurrentState());
     }
 
     @Test
@@ -30,16 +30,16 @@ public class WaterTest {
         WaterStateMachine fsm = new WaterStateMachine();
 
         assertThrows(UnhandledTransitionException.class, () -> {
-            fsm.on(new Frozen());
+            fsm.onEvent(new Melted());
         });
     }
 
     @Test
     public void testUnhandledTransitionWithHandler() {
         WaterStateMachine fsm = new WaterStateMachine();
-        fsm.onUnhandled(event -> GAS);
-        fsm.on(new Frozen());
+        fsm.onUnhandled(event -> fsm.getCurrentState()); // essentially ignore
+        fsm.onEvent(new Melted());
 
-        assertEquals(GAS, fsm.getCurrentState());
+        assertEquals(LIQUID, fsm.getCurrentState());
     }
 }
