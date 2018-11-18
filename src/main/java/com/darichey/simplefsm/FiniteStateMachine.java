@@ -18,6 +18,10 @@ public abstract class FiniteStateMachine<S, E> {
         return new StateMachineDSL<>(this, fromState);
     }
 
+    public StateMachineDSL<S, E> whenAny() {
+        return new StateMachineDSL<>(this, null);
+    }
+
     public void onUnhandled(Function<? super E, ? extends S> fallbackHandler) {
         this.fallbackHandler = fallbackHandler;
     }
@@ -35,6 +39,14 @@ public abstract class FiniteStateMachine<S, E> {
             }
         }
 
+        List<EventHandler<S, E>> anyHandlers = transitionHandlers.getOrDefault(new HandlerKey<S>(null, event.getClass()), Collections.emptyList());
+        for (EventHandler<S, E> handler : anyHandlers) {
+            if (handler.canHandle(event)) {
+                currentState = handler.handle(event);
+                return;
+            }
+        }
+
         if (fallbackHandler != null) {
             currentState = fallbackHandler.apply(event);
         } else {
@@ -46,6 +58,7 @@ public abstract class FiniteStateMachine<S, E> {
         return currentState;
     }
 
+    @SuppressWarnings("unchecked")
     <C extends E> void addHandler(S from, Class<C> eventType, Predicate<? super C> canHandle, Function<? super C, ? extends S> handler) {
         transitionHandlers
                 .computeIfAbsent(new HandlerKey<>(from, eventType), key -> new ArrayList<>())

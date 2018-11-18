@@ -2,6 +2,7 @@ package com.darichey.simplefsm.test;
 
 import com.darichey.simplefsm.UnhandledTransitionException;
 import com.darichey.simplefsm.test.Event.Event1;
+import com.darichey.simplefsm.test.Event.Event3;
 import org.junit.jupiter.api.Test;
 
 import static com.darichey.simplefsm.test.States.A;
@@ -43,5 +44,12 @@ public class Tests {
         });
     }
 
+    @Test
+    public void testAnyHandler() {
+        TestStateMachine fsm = new TestStateMachine();
+        fsm.onEvent(new Event3());
+
+        assertEquals(A, fsm.getCurrentState());
+    }
 
 }

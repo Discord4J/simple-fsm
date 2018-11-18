@@ -16,5 +16,7 @@ class TestStateMachine extends FiniteStateMachine<States, Event> {
 
         when(B).on(Event2.class, event2 -> A);
         when(C).on(Event2.class, event2 -> A);
+
+        whenAny().on(Event3.class, event3 -> getCurrentState());
     }
 }
