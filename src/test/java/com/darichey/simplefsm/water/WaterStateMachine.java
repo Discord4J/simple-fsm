@@ -8,28 +8,28 @@ import static com.darichey.simplefsm.water.Event.*;
 class WaterStateMachine extends FiniteStateMachine<WaterStates, Event> {
 
     {
-        startWith(LIQUID);
+        startWith(Liquid.INSTANCE);
 
-        when(SOLID)
-                .on(Melted.class, melted -> {
+        when(Solid.class)
+                .on(Melted.class, (curState, melted) -> {
                     System.out.println("Solid -> Liquid");
-                    return LIQUID;
+                    return Liquid.INSTANCE;
                 });
 
-        when(LIQUID)
-                .on(Frozen.class, frozen -> {
+        when(Liquid.class)
+                .on(Frozen.class, (curState, frozen) -> {
                     System.out.println("Liquid -> Solid");
-                    return SOLID;
+                    return Solid.INSTANCE;
                 })
-                .on(Vaporized.class, vaporized -> {
+                .on(Vaporized.class, (curState, vaporized) -> {
                     System.out.println("Liquid -> Gas");
-                    return GAS;
+                    return Gas.INSTANCE;
                 });
 
-        when(GAS)
-                .on(Condensed.class, condensed -> {
+        when(Gas.class)
+                .on(Condensed.class, (curState, condensed) -> {
                     System.out.println("Gas -> Liquid");
-                    return LIQUID;
+                    return Liquid.INSTANCE;
                 });
     }
 }

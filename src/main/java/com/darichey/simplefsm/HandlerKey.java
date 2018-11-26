@@ -2,11 +2,11 @@ package com.darichey.simplefsm;
 
 import java.util.Objects;
 
-class HandlerKey<S> {
-    private final S state;
+class HandlerKey<S, E> {
+    private final Class<?> state;
     private final Class<?> eventType;
 
-    HandlerKey(S state, Class<?> eventType) {
+    HandlerKey(Class<? extends S> state, Class<? extends E> eventType) {
         this.state = state;
         this.eventType = eventType;
     }
@@ -19,7 +19,7 @@ class HandlerKey<S> {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        HandlerKey<?> key = (HandlerKey<?>) o;
+        HandlerKey<?, ?> key = (HandlerKey<?, ?>) o;
         return Objects.equals(state, key.state) &&
                 Objects.equals(eventType, key.eventType);
     }

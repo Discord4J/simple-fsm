@@ -14,7 +14,7 @@ public class WaterTest {
     public void testInitial() {
         WaterStateMachine fsm = new WaterStateMachine();
 
-        assertEquals(LIQUID, fsm.getCurrentState());
+        assertEquals(Liquid.INSTANCE, fsm.getCurrentState());
     }
 
     @Test
@@ -22,7 +22,7 @@ public class WaterTest {
         WaterStateMachine fsm = new WaterStateMachine();
         fsm.onEvent(new Frozen());
 
-        assertEquals(SOLID, fsm.getCurrentState());
+        assertEquals(Solid.INSTANCE, fsm.getCurrentState());
     }
 
     @Test
@@ -40,6 +40,6 @@ public class WaterTest {
         fsm.onUnhandled(event -> fsm.getCurrentState()); // essentially ignore
         fsm.onEvent(new Melted());
 
-        assertEquals(LIQUID, fsm.getCurrentState());
+        assertEquals(Liquid.INSTANCE, fsm.getCurrentState());
     }
 }

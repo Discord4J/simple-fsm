@@ -16,7 +16,7 @@ public class Tests {
     public void testInitial() {
         TestStateMachine fsm = new TestStateMachine();
 
-        assertEquals(A, fsm.getCurrentState());
+        assertEquals(A.INSTANCE, fsm.getCurrentState());
     }
 
     @Test
@@ -24,7 +24,7 @@ public class Tests {
         TestStateMachine fsm = new TestStateMachine();
         fsm.onEvent(new Event1(1));
 
-        assertEquals(B, fsm.getCurrentState());
+        assertEquals(B.INSTANCE, fsm.getCurrentState());
     }
 
     @Test
@@ -32,7 +32,7 @@ public class Tests {
         TestStateMachine fsm = new TestStateMachine();
         fsm.onEvent(new Event1(-1));
 
-        assertEquals(C, fsm.getCurrentState());
+        assertEquals(C.INSTANCE, fsm.getCurrentState());
     }
 
     @Test
@@ -49,7 +49,7 @@ public class Tests {
         TestStateMachine fsm = new TestStateMachine();
         fsm.onEvent(new Event3());
 
-        assertEquals(A, fsm.getCurrentState());
+        assertEquals(A.INSTANCE, fsm.getCurrentState());
     }
 
 }
