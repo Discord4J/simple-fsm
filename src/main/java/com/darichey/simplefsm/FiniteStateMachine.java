@@ -19,7 +19,7 @@ public abstract class FiniteStateMachine<S, E> {
         return new StateMachineDSL<>(this, fromState);
     }
 
-    public StateMachineDSL<S, E, ?> whenAny() {
+    public StateMachineDSL<S, E, S> whenAny() {
         return new StateMachineDSL<>(this, null);
     }
 
