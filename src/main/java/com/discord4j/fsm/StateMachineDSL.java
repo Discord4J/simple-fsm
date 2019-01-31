@@ -1,7 +1,6 @@
-package com.darichey.simplefsm;
+package com.discord4j.fsm;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class StateMachineDSL<S, E, U extends S> {

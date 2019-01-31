@@ -1,9 +1,9 @@
-package com.darichey.simplefsm.test;
+package com.discord4j.fsm.test;
 
-import com.darichey.simplefsm.FiniteStateMachine;
-import com.darichey.simplefsm.test.Event.*;
+import com.discord4j.fsm.FiniteStateMachine;
+import com.discord4j.fsm.test.Event.*;
 
-import static com.darichey.simplefsm.test.States.*;
+import static com.discord4j.fsm.test.States.*;
 
 class TestStateMachine extends FiniteStateMachine<States, Event> {
 

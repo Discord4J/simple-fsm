@@ -1,4 +1,4 @@
-package com.darichey.simplefsm.test;
+package com.discord4j.fsm.test;
 
 class Event {
     static class Event1 extends Event {

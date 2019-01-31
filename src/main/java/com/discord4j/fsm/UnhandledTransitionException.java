@@ -1,4 +1,4 @@
-package com.darichey.simplefsm;
+package com.discord4j.fsm;
 
 public class UnhandledTransitionException extends RuntimeException {
 

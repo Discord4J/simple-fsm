@@ -1,10 +1,10 @@
-package com.darichey.simplefsm.water;
+package com.discord4j.fsm.water;
 
-import com.darichey.simplefsm.UnhandledTransitionException;
-import com.darichey.simplefsm.water.Event.*;
+import com.discord4j.fsm.UnhandledTransitionException;
+import com.discord4j.fsm.water.Event.*;
 import org.junit.jupiter.api.Test;
 
-import static com.darichey.simplefsm.water.WaterStates.*;
+import static com.discord4j.fsm.water.WaterStates.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

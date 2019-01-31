@@ -1,4 +1,4 @@
-package com.darichey.simplefsm;
+package com.discord4j.fsm;
 
 import java.util.*;
 import java.util.function.BiFunction;

@@ -1,9 +1,9 @@
-package com.darichey.simplefsm.water;
+package com.discord4j.fsm.water;
 
-import com.darichey.simplefsm.FiniteStateMachine;
+import com.discord4j.fsm.FiniteStateMachine;
 
-import static com.darichey.simplefsm.water.WaterStates.*;
-import static com.darichey.simplefsm.water.Event.*;
+import static com.discord4j.fsm.water.WaterStates.*;
+import static com.discord4j.fsm.water.Event.*;
 
 class WaterStateMachine extends FiniteStateMachine<WaterStates, Event> {
 

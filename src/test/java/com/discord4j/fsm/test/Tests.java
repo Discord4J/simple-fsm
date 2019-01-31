@@ -1,13 +1,13 @@
-package com.darichey.simplefsm.test;
+package com.discord4j.fsm.test;
 
-import com.darichey.simplefsm.UnhandledTransitionException;
-import com.darichey.simplefsm.test.Event.Event1;
-import com.darichey.simplefsm.test.Event.Event3;
+import com.discord4j.fsm.UnhandledTransitionException;
+import com.discord4j.fsm.test.Event.Event1;
+import com.discord4j.fsm.test.Event.Event3;
 import org.junit.jupiter.api.Test;
 
-import static com.darichey.simplefsm.test.States.A;
-import static com.darichey.simplefsm.test.States.B;
-import static com.darichey.simplefsm.test.States.C;
+import static com.discord4j.fsm.test.States.A;
+import static com.discord4j.fsm.test.States.B;
+import static com.discord4j.fsm.test.States.C;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

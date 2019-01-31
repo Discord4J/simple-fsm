@@ -1,4 +1,4 @@
-package com.darichey.simplefsm.water;
+package com.discord4j.fsm.water;
 
 class Event {
     static class Condensed extends Event {}
