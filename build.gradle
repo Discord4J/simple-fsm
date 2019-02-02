@@ -1,9 +1,11 @@
 plugins {
     id 'java'
+    id 'maven-publish'
+    id 'nebula.nebula-bintray' version '5.0.0'
+    id 'net.researchgate.release' version '2.6.0'
 }
 
 group 'com.discord4j'
-version '1.0.0'
 
 sourceCompatibility = 1.8
 
@@ -13,4 +15,94 @@ repositories {
 
 dependencies {
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.1'
+}
+
+tasks.withType(Javadoc) {
+    options {
+        encoding = 'UTF-8'
+        tags = ["apiNote:a:API Note:",
+                "implSpec:a:Implementation Requirements:",
+                "implNote:a:Implementation Note:"]
+        addStringOption 'encoding', 'UTF-8'
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.incremental = true
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayKey') ? project.property('bintrayKey') : System.getenv('BINTRAY_KEY')
+    publications = ['maven']
+    dryRun = false
+    publish = true
+    pkg {
+        userOrg = 'discord4j'
+        repo = 'maven'
+        name = 'simple-fsm'
+        websiteUrl = 'https://discord4j.com'
+        issueTrackerUrl = 'https://github.com/Discord4J/simple-fsm/issues'
+        vcsUrl = 'https://github.com/Discord4J/simple-fsm.git'
+        licenses = ['MIT']
+        labels = ['fsm']
+        publicDownloadNumbers = true
+        attributes = [:]
+        version {
+            name = project.version
+            vcsTag = project.version
+            gpg {
+                sign = true
+            }
+            if (project.hasProperty('sonatypeUsername') && project.hasProperty('sonatypePassword')) {
+                def sonatypeUsername = project.property('sonatypeUsername')
+                def sonatypePassword = project.property('sonatypePassword')
+                mavenCentralSync {
+                    user = sonatypeUsername
+                    password = sonatypePassword
+                }
+            }
+        }
+    }
+}
+
+bintrayUpload.dependsOn build
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+        }
+    }
+}
+
+release {
+    preTagCommitMessage = 'Release version'
+    tagCommitMessage = 'Release version'
+    newVersionCommitMessage = 'Next development version'
+}
+
+afterReleaseBuild.dependsOn bintrayUpload
+
+wrapper {
+    gradleVersion = "5.1.1"
+    distributionType = Wrapper.DistributionType.ALL
 }
